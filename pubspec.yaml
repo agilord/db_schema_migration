@@ -1,0 +1,18 @@
+name: db_schema_migration
+description: >
+  A database schema migration tool, to execute the right sequence of
+  SQL commands that are required to get your DB to the desired state.
+version: 0.0.1
+author: Istvan Soos <istvan.soos@agilord.com>
+
+homepage: https://github.com/agilord/db_schema_migration
+
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+
+dependencies:
+  pub_semver: any
+
+dev_dependencies:
+  postgresql: any
+  test: '>=0.12.0 <0.13.0'
