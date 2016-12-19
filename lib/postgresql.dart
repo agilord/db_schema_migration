@@ -12,6 +12,7 @@ class PostgresqlSchemaMigrator extends DBSchemaMigrator<Connection> {
   Set<String> _names = new Set();
   String _tableName;
 
+  /// Postgresql schema migration using the `postgresql` library.
   PostgresqlSchemaMigrator({String schema, String table: 'schema_version'}) {
     if (schema != null) {
       _tableName = '$schema.$table';
@@ -36,7 +37,7 @@ class PostgresqlSchemaMigrator extends DBSchemaMigrator<Connection> {
 
   @override
   Future<String> readVersion(Connection connection, String name) async {
-    List<Row> rows = await connection.query(
+    final List<Row> rows = await connection.query(
         'SELECT version FROM $_tableName WHERE name = @0', [name]).toList();
     return rows.isEmpty ? null : rows[0][0];
   }
@@ -46,7 +47,7 @@ class PostgresqlSchemaMigrator extends DBSchemaMigrator<Connection> {
       Connection connection, String name, String version) async {
     bool exists = _names.contains(name);
     if (!exists) {
-      String cv = await readVersion(connection, name);
+      final String cv = await readVersion(connection, name);
       exists = cv != null;
     }
     if (exists) {

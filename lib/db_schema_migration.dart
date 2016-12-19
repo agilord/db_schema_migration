@@ -13,14 +13,14 @@ class Migrations {
   /// Add a new migration SQL to the set.
   void add(dynamic version, String sql) {
     if (version == null) {
-      throw 'Version mustn\'t be null.';
+      throw new Exception('Version mustn\'t be null.');
     }
     // Workaround until Version.parse handles incomplete versions.
-    List<String> t = '$version'.split('.');
+    final List<String> t = '$version'.split('.');
     while (t.length < 3) t.add('0');
-    Version v = new Version.parse(t.join('.'));
+    final Version v = new Version.parse(t.join('.'));
     if (_migrations.containsKey(v)) {
-      throw 'Version key already in use: $version';
+      throw new Exception('Version key already in use: $version');
     }
     _migrations[v] = sql;
   }
@@ -55,10 +55,10 @@ abstract class DBSchemaMigrator<C> {
       C connection, String name, Migrations migrations) async {
     await initializeBackingTable(connection);
     for (Version version in migrations.versions) {
-      String cv = await readVersion(connection, name);
-      Version current = cv == null ? Version.none : new Version.parse(cv);
+      final String cv = await readVersion(connection, name);
+      final Version current = cv == null ? Version.none : new Version.parse(cv);
       if (current < version) {
-        String sql = migrations.getSql(version);
+        final String sql = migrations.getSql(version);
         await executeSql(connection, sql);
         await updateVersion(connection, name, version.toString());
       }

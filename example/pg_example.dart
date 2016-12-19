@@ -9,9 +9,9 @@ import 'package:db_schema_migration/postgresql.dart';
 import 'package:postgresql/postgresql.dart';
 
 Future main() async {
-  Connection connection = await _getConnection();
-  var migrator = new PostgresqlSchemaMigrator();
-  var migrations = new Migrations();
+  final Connection connection = await _getConnection();
+  final migrator = new PostgresqlSchemaMigrator();
+  final migrations = new Migrations();
   migrations.add(1,
       'CREATE TABLE user(name VARCHAR(127) PRIMARY KEY, password_hash VARCHAR(127));');
   migrations.add(2, 'ALTER TABLE user ADD COLUMN address varchar(127);');

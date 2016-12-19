@@ -9,7 +9,7 @@ import 'package:test/test.dart';
 void main() {
   group('Migrations', () {
     test('Integers', () {
-      Migrations m = new Migrations();
+      final Migrations m = new Migrations();
       for (int i = 3; i > 0; i--) {
         m.add(i, 'SQL#$i');
       }
@@ -18,7 +18,7 @@ void main() {
     });
 
     test('Date-based versions', () {
-      Migrations m = new Migrations();
+      final Migrations m = new Migrations();
       for (int i = 3; i > 0; i--) {
         m.add('20161204.$i', 'SQL#$i');
       }
@@ -28,8 +28,8 @@ void main() {
   });
   group('DBSchemaMigrator', () {
     test('Repeated execution.', () async {
-      var t = new TestDBSchemaMigrator();
-      var migrations = new Migrations()..addAll({1: '#1', 2: '#2'});
+      final t = new TestDBSchemaMigrator();
+      final migrations = new Migrations()..addAll({1: '#1', 2: '#2'});
       var v = await t.migrate(null, 'entity', migrations);
       expect(v, '2.0.0');
       expect(t.executed, ['#1', '#2']);
@@ -41,7 +41,7 @@ void main() {
     });
 
     test('Incremental execution.', () async {
-      var t = new TestDBSchemaMigrator();
+      final t = new TestDBSchemaMigrator();
       var migrations = new Migrations()..addAll({1: '#1', 2: '#2'});
       var v = await t.migrate(null, 'entity', migrations);
       expect(v, '2.0.0');
@@ -56,13 +56,17 @@ void main() {
   });
 }
 
+///
 class TestDBSchemaMigrator extends DBSchemaMigrator {
+  ///
   List<String> executed = [];
+  ///
   bool initialized = false;
+  ///
   Map<String, String> versions = {};
 
   @override
-  Future executeSql(connection, String sql) async {
+  Future executeSql(dynamic connection, String sql) async {
     executed.add(sql);
   }
 
